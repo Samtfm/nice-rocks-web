@@ -3,6 +3,6 @@ import ReactDOM from 'react-dom';
 import './styles.scss';
 
 const Index = () => {
-  return <div>Hello squirrel!</div>;
+  return <div>Hello, hongo!</div>;
 };
 ReactDOM.render(<Index />, document.getElementById('root'));
