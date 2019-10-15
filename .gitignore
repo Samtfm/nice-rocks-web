@@ -2,3 +2,6 @@ node_modules
 *.DS_Store
 *bundle.js
 *bundle.js.map
+*credentials.json
+*tocken.json
+*token.json
