@@ -3,5 +3,5 @@ node_modules
 *bundle.js
 *bundle.js.map
 *credentials.json
-*tocken.json
 *token.json
+.env

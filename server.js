@@ -6,6 +6,8 @@ const fs = require('fs');
 const readline = require('readline');
 const { google } = require('googleapis');
 
+require('dotenv').config()
+
 // If modifying these scopes, delete token.json.
 const SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly'];
 // The file token.json stores the user's access and refresh tokens, and is
@@ -31,21 +33,18 @@ app.listen(3000,  () => console.log("Example app listening on port 3000!"));
 
 
 app.get('/rocks', (req, res) => {
-  console.log('GET /rocks')
-  // Load client secrets from a local file.
-  fs.readFile('credentials.json', (err, content) => {
-    if (err) return console.log('Error loading client secret file:', err);
-    // Authorize a client with credentials, then call the Google Sheets API.
-    authorize(JSON.parse(content)).then(auth => {
-      return readRocks(auth);
-    }).then(rocks => {
-      console.log("rocks", rocks);
-      res.json({
-        rocks: rocks
-      });
-    })
+  console.log('GET /rocks');
+  // Load client secrets from a environment variable.
+  console.log(process.env.GOOGLE_APPLICATION_CREDENTIALS);
+  var googleConfig = JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS);
+  authorize(googleConfig).then(auth => {
+    return readRocks(auth);
+  }).then(rocks => {
+    console.log("rocks", rocks);
+    res.json({
+      rocks: rocks
+    });
   });
-
 });
 
 /**
