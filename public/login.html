@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Nice Rocks</title>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <meta name="google-signin-client_id" content="572512032401-e80qdbtlga3em2qh84l00mr6hcd3rrg0.apps.googleusercontent.com">
+    <meta name="google-signin-cookiepolicy" content="single_host_origin">
+    <meta name="google-signin-scope" content="profile email">
+  </head>
+  <body>
+    <div class="g-signin2" data-onsuccess="onGoogleSignIn"></div>
+
+
+    <script type="text/javascript">
+      function onGoogleSignIn(googleUser){
+        console.log('onGoogleSignIn');
+
+        var profile = googleUser.getBasicProfile();
+        console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+        console.log('Name: ' + profile.getName());
+        console.log('Image URL: ' + profile.getImageUrl());
+        console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+
+        // const csrfToken = getCookie('XSRF-TOKEN');
+
+        var idToken = googleUser.getAuthResponse().id_token;
+        fetch('/sessionLogin', {
+          method: 'post',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({idToken: idToken}),
+        }).then(r => r.json()).then(data => {
+          window.blop = data;
+          if (data.status === 'success') {
+            location.assign('/');
+          }
+        });
+
+      };
+    </script>
+    <div id="root"></div>
+  </body>
+
+
+
+</html>

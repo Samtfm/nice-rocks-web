@@ -30,13 +30,5 @@ module.exports = {
         path: path.join(__dirname, "public"),
         filename: "bundle.js",
         publicPath: "/"
-    },
-    plugins: [
-        new webpack.HotModuleReplacementPlugin()
-    ],
-    devServer: {
-      // contentBase: './dist',
-      // historyApiFallback: true,
-      // hot: true,
     }
 };

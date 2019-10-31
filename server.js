@@ -1,19 +1,58 @@
 const express = require("express");
 let  app = express();
+import * as admin from 'firebase-admin';
+var firebase = require("firebase/app");
+require("firebase/auth");
+// require("firebase/firestore");
+
+var bodyParser = require('body-parser');
+var cookieParser = require('cookie-parser');
+// var csrf = require('csurf')
 
 
 const fs = require('fs');
 const readline = require('readline');
 const { google } = require('googleapis');
 
-require('dotenv').config()
+require('dotenv').config();
+
+// non-confidential config that identifies the firebase project
+const firebaseConfig = {
+  apiKey: "AIzaSyBcg_qECwUfEI5B84n79H7kvpMICvb5qWY",
+  authDomain: "nice-rocks001.firebaseapp.com",
+  databaseURL: "https://nice-rocks001.firebaseio.com",
+  projectId: "nice-rocks001",
+  storageBucket: "nice-rocks001.appspot.com",
+  messagingSenderId: "572512032401",
+  appId: "1:572512032401:web:d8f614c7e58deb25611130"
+};
+firebase.initializeApp(firebaseConfig);
+
+// read confidential account info from env variable
+const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: 'https://nice-rocks001.firebaseio.com'
+});
 
 // If modifying these scopes, delete token.json.
 const SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly'];
 // The file token.json stores the user's access and refresh tokens, and is
 // created automatically when the authorization flow completes for the first
 // time.
-const TOKEN_PATH = 'token.json';
+const TOKEN_PATH = 'token2.json';
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
+
+app.use(cookieParser());
+// app.use(csrf({cookie: {
+//   httpOnly: true,
+//   secure: true
+// }}));
+// app.use(csrf({cookie: true}));
+
 
 app.use(function(req, res, next) {
 	res.header('Access-Control-Allow-Origin', '*');
@@ -23,83 +62,109 @@ app.use(function(req, res, next) {
 });
 
 app.get('/', (req, res) => {
-  console.log('GET /')
-
+  console.log('GET /');
+	// res.cookie('XSRF-TOKEN', req.csrfToken());
   res.sendFile(__dirname + '/public/index.html');
 });
+
+app.get('/login', (req, res) => {
+  console.log('GET /login');
+	// res.cookie('XSRF-TOKEN', req.csrfToken());
+  res.sendFile(__dirname + '/public/login.html');
+});
+
 app.use(express.static('public'));
 app.listen(3000,  () => console.log("Example app listening on port 3000!"));
 
 
+app.post('/sessionLogin', (req, res) => {
+	console.log("POST /sesionLogin");
+	const idToken = req.body.idToken.toString();
 
-app.get('/rocks', (req, res) => {
-  console.log('GET /rocks');
-  // Load client secrets from a environment variable.
-  console.log(process.env.GOOGLE_APPLICATION_CREDENTIALS);
-  var googleConfig = JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS);
-  authorize(googleConfig).then(auth => {
-    return readRocks(auth);
-  }).then(rocks => {
-    console.log("rocks", rocks);
-    res.json({
-      rocks: rocks
-    });
-  });
+	// const csrfToken = req.body.csrfToken.toString();
+	// console.log(idToken, csrfToken);
+	// // Guard against CSRF attacks.
+	// if (csrfToken !== req.cookies.csrfToken) {
+	// 	res.status(401).send('UNAUTHORIZED REQUEST!');
+	// 	return;
+	// }
+
+	// Build Firebase credential with the Google ID token.
+	var credential = firebase.auth.GoogleAuthProvider.credential(idToken);
+
+	// Sign in with credential from the Google user.
+	firebase.auth().signInWithCredential(credential).then(data => {
+		data.user.getIdToken().then(idToken => {
+			// Set session expiration to 5 days.
+			const expiresIn = 60 * 60 * 24 * 5 * 1000;
+			// Create the session cookie. This will also verify the ID token in the process.
+			// The session cookie will have the same claims as the ID token.
+			// To only allow session cookie setting on recent sign-in, auth_time in ID token
+			// can be checked to ensure user was recently signed in before creating a session cookie.
+			admin.auth().createSessionCookie(idToken, {expiresIn}).then((sessionCookie) => {
+			 // Set cookie policy for session cookie.
+			 const options = {
+				 maxAge: expiresIn,
+				 httpOnly: true,
+				 // TODO: add secure flag for https!
+				 // secure: true,
+			 };
+			 res.cookie('session', sessionCookie, options);
+			 res.end(JSON.stringify({status: 'success'}));
+			}, error => {
+				console.log(error);
+			 res.status(401).send('UNAUTHORIZED REQUEST!');
+			});
+		});
+	});
+}, (error) => {
+	console.log(error);
+  // Handle Errors here.
+  var errorCode = error.code;
+  var errorMessage = error.message;
+  // The email of the user's account used.
+  var email = error.email;
+  // The firebase.auth.AuthCredential type that was used.
+  var cred = error.credential;
+  // ...
 });
 
-/**
- * Create an OAuth2 client with the given credentials, and then execute the
- * given callback function.
- * @param {Object} credentials The authorization client credentials.
- * @param {function} callback The callback to call with the authorized client.
- */
-function authorize(credentials, callback) {
-  return new Promise((resolve, reject) => {
-    const {client_secret, client_id, redirect_uris} = credentials.installed;
-    const oAuth2Client = new google.auth.OAuth2(
-        client_id, client_secret, redirect_uris[0]);
+app.get('/rocks', (req, res) => {
+	console.log('GET /rocks');
 
-    // Check if we have previously stored a token.
-    fs.readFile(TOKEN_PATH, (err, token) => {
-      if (err) return resolve(getNewToken(oAuth2Client));
-      oAuth2Client.setCredentials(JSON.parse(token));
-      resolve(oAuth2Client);
-    });
-  });
-}
+	const sessionCookie = req.cookies.session || '';
 
-/**
- * Get and store new token after prompting for user authorization, and then
- * execute the given callback with the authorized OAuth2 client.
- * @param {google.auth.OAuth2} oAuth2Client The OAuth2 client to get token for.
- * @param {getEventsCallback} callback The callback for the authorized client.
- */
-function getNewToken(oAuth2Client) {
-  return new Promise((resolve, reject) => {
-    const authUrl = oAuth2Client.generateAuthUrl({
-      access_type: 'offline',
-      scope: SCOPES,
-    });
-    console.log('Authorize this app by visiting this url:', authUrl);
-    const rl = readline.createInterface({
-      input: process.stdin,
-      output: process.stdout,
-    });
-    rl.question('Enter the code from that page here: ', (code) => {
-      rl.close();
-      oAuth2Client.getToken(code, (err, token) => {
-        if (err) return console.error('Error while trying to retrieve access token', err);
-        oAuth2Client.setCredentials(token);
-        // Store the token to disk for later program executions
-        fs.writeFile(TOKEN_PATH, JSON.stringify(token), (err) => {
-          if (err) return console.error(err);
-          console.log('Token stored to', TOKEN_PATH);
-        });
-        resolve(oAuth2Client);
-      });
-    });
-  });
-}
+// Verify the session cookie. In this case an additional check is added to detect
+// if the user's Firebase session was revoked, user deleted/disabled, etc.
+	admin.auth().verifySessionCookie(
+		sessionCookie, true /** checkRevoked */)
+		.then((decodedClaims) => {
+			res.json({
+	      rocks: [decodedClaims.name]
+	    });
+		})
+		.catch(error => {
+			console.log(error)
+			// Session cookie is unavailable or invalid. Force user to login.
+			// res.redirect('/login');
+		});
+});
+
+//
+//
+// app.get('/rocks', (req, res) => {
+//   console.log('GET /rocks');
+//   // Load client secrets from a environment variable.
+//   var googleConfig = JSON.parse(process.env.GOOGLE_APP_CREDS);
+//   authorize(googleConfig).then(auth => {
+//     return readRocks(auth);
+//   }).then(rocks => {
+//     console.log("rocks", rocks);
+//     res.json({
+//       rocks: rocks
+//     });
+//   });
+// });
 
 /**
  * Prints the names and majors of students in a sample spreadsheet:
