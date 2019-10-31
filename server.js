@@ -1,6 +1,6 @@
 const express = require("express");
 let  app = express();
-import * as admin from 'firebase-admin';
+var firebaseAdmin = require('firebase-admin');
 var firebase = require("firebase/app");
 require("firebase/auth");
 // require("firebase/firestore");
@@ -30,8 +30,8 @@ firebase.initializeApp(firebaseConfig);
 
 // read confidential account info from env variable
 const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
+firebaseAdmin.initializeApp({
+  credential: firebaseAdmin.credential.cert(serviceAccount),
   databaseURL: 'https://nice-rocks001.firebaseio.com'
 });
 
@@ -101,7 +101,7 @@ app.post('/sessionLogin', (req, res) => {
 			// The session cookie will have the same claims as the ID token.
 			// To only allow session cookie setting on recent sign-in, auth_time in ID token
 			// can be checked to ensure user was recently signed in before creating a session cookie.
-			admin.auth().createSessionCookie(idToken, {expiresIn}).then((sessionCookie) => {
+			firebaseAdmin.auth().createSessionCookie(idToken, {expiresIn}).then((sessionCookie) => {
 			 // Set cookie policy for session cookie.
 			 const options = {
 				 maxAge: expiresIn,
@@ -136,7 +136,7 @@ app.get('/rocks', (req, res) => {
 
 // Verify the session cookie. In this case an additional check is added to detect
 // if the user's Firebase session was revoked, user deleted/disabled, etc.
-	admin.auth().verifySessionCookie(
+	firebaseAdmin.auth().verifySessionCookie(
 		sessionCookie, true /** checkRevoked */)
 		.then((decodedClaims) => {
 			res.json({
