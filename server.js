@@ -29,11 +29,16 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 // read confidential account info from env variable
-const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
-firebaseAdmin.initializeApp({
-  credential: firebaseAdmin.credential.cert(serviceAccount),
-  databaseURL: 'https://nice-rocks001.firebaseio.com'
-});
+try {
+  const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+  firebaseAdmin.initializeApp({
+    credential: firebaseAdmin.credential.cert(serviceAccount),
+    databaseURL: 'https://nice-rocks001.firebaseio.com'
+  });
+} catch(error) {
+  console.log(error)
+}
+
 
 // If modifying these scopes, delete token.json.
 const SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly'];
