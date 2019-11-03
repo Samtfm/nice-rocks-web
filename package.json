@@ -8,7 +8,7 @@
     "start": "node server.js",
     "dev": "npm-run-all --parallel dev-server webpack-watch",
     "dev-server": "nodemon --exec babel-node server.js",
-    "webpack-watch": "webpack --watch --devtool source-map"
+    "webpack-watch": "webpack --watch --devtool source-map --mode=development"
   },
   "keywords": [],
   "author": "",

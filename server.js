@@ -80,6 +80,8 @@ app.get('/login', (req, res) => {
 
 app.use(express.static('public'));
 var port = process.env.PORT || 3000;
+console.log(process.env.NODE_ENV);
+
 app.listen(port,  () => console.log("Example app listening on port " + port + "!"));
 
 

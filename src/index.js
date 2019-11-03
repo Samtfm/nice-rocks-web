@@ -5,10 +5,12 @@ import RockList from './RockList';
 import Browse from './Browse';
 import Auth from './Auth';
 import { friendRocks } from './demoData';
+import FilterButtons from './components/FilterButtons';
 
 const Index = () => {
   return (
     <div>
+      <FilterButtons />
       <button onClick={() => location.assign('/login')}>login</button>
       <RockList />
       <Browse friendRocks={friendRocks} />
