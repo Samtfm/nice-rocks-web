@@ -16,6 +16,8 @@ const { google } = require('googleapis');
 
 require('dotenv').config();
 
+const isProd = process.env.NODE_ENV && process.env.NODE_ENV === 'production';
+
 // non-confidential config that identifies the firebase project
 const firebaseConfig = {
   apiKey: "AIzaSyBcg_qECwUfEI5B84n79H7kvpMICvb5qWY",
@@ -29,16 +31,13 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 // read confidential account info from env variable
-try {
+if (isProd) {
   const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
   firebaseAdmin.initializeApp({
     credential: firebaseAdmin.credential.cert(serviceAccount),
     databaseURL: 'https://nice-rocks001.firebaseio.com'
   });
-} catch(error) {
-  console.log(error)
 }
-
 
 // If modifying these scopes, delete token.json.
 const SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly'];
@@ -87,6 +86,12 @@ app.listen(port,  () => console.log("Example app listening on port " + port + "!
 
 app.post('/sessionLogin', (req, res) => {
 	console.log("POST /sesionLogin");
+
+  if (!isProd) {
+    console.log("Auth not supported in development mode");
+    res.status(401).send('auth not supported in development mode');
+  }
+
 	const idToken = req.body.idToken.toString();
 
 	// const csrfToken = req.body.csrfToken.toString();
@@ -152,7 +157,7 @@ app.get('/rocks', (req, res) => {
 	    });
 		})
 		.catch(error => {
-			console.log(error)
+			console.log(error);
 			// Session cookie is unavailable or invalid. Force user to login.
 			// res.redirect('/login');
 		});
