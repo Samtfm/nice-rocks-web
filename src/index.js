@@ -4,20 +4,18 @@ import './basicStyles.scss';
 import RockList from './RockList';
 import Browse from './components/Browse';
 import Auth from './Auth';
-import { friendRocks } from './demoData';
-import FilterButtons from './components/FilterButtons';
+import Welcome from './components/Welcome';
 
-// add this button to the page to enable login:
-//    <button onClick={() => location.assign('/login')}>login</button>
+import FirebaseProvider from './components/FirebaseProvider';
 
 const Index = () => {
   return (
-    <div>
-      <FilterButtons />
-      <Browse friendRocks={friendRocks} />
-    </div>
+    <FirebaseProvider>
+      <Welcome />
+    </FirebaseProvider>
   );
 };
+
 
 window.addEventListener('DOMContentLoaded', () => {
   ReactDOM.render(<Index />, document.getElementById('root'));

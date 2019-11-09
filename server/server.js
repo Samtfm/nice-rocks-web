@@ -9,9 +9,8 @@ var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 // var csrf = require('csurf')
 
-
+import { firebaseConfig } from './util/firebase.js';
 const fs = require('fs');
-const readline = require('readline');
 const { google } = require('googleapis');
 
 require('dotenv').config();
@@ -19,15 +18,7 @@ require('dotenv').config();
 const isProd = process.env.NODE_ENV && process.env.NODE_ENV === 'production';
 
 // non-confidential config that identifies the firebase project
-const firebaseConfig = {
-  apiKey: "AIzaSyBcg_qECwUfEI5B84n79H7kvpMICvb5qWY",
-  authDomain: "nice-rocks001.firebaseapp.com",
-  databaseURL: "https://nice-rocks001.firebaseio.com",
-  projectId: "nice-rocks001",
-  storageBucket: "nice-rocks001.appspot.com",
-  messagingSenderId: "572512032401",
-  appId: "1:572512032401:web:d8f614c7e58deb25611130"
-};
+
 firebase.initializeApp(firebaseConfig);
 
 // read confidential account info from env variable
@@ -68,18 +59,18 @@ app.use(function(req, res, next) {
 app.get('/', (req, res) => {
   console.log('GET /');
 	// res.cookie('XSRF-TOKEN', req.csrfToken());
-  res.sendFile(__dirname + '/public/index.html');
+  res.sendFile(global.appRoot + '/public/index.html');
 });
 
 app.get('/login', (req, res) => {
   console.log('GET /login');
 	// res.cookie('XSRF-TOKEN', req.csrfToken());
-  res.sendFile(__dirname + '/public/login.html');
+  res.sendFile(global.appRoot + '/public/login.html');
 });
 
-app.use(express.static('public'));
+app.use('/', express.static(global.appRoot + '/public'));
+// app.use(express.static(global.appRoot + 'public'));
 var port = process.env.PORT || 3000;
-console.log(process.env.NODE_ENV);
 
 app.listen(port,  () => console.log("Example app listening on port " + port + "!"));
 
@@ -92,7 +83,7 @@ app.post('/sessionLogin', (req, res) => {
     res.status(401).send('auth not supported in development mode');
   }
 
-	const idToken = req.body.idToken.toString();
+	const googleIdToken = req.body.idToken.toString();
 
 	// const csrfToken = req.body.csrfToken.toString();
 	// console.log(idToken, csrfToken);
@@ -103,7 +94,7 @@ app.post('/sessionLogin', (req, res) => {
 	// }
 
 	// Build Firebase credential with the Google ID token.
-	var credential = firebase.auth.GoogleAuthProvider.credential(idToken);
+	var credential = firebase.auth.GoogleAuthProvider.credential(googleIdToken);
 
 	// Sign in with credential from the Google user.
 	firebase.auth().signInWithCredential(credential).then(data => {
