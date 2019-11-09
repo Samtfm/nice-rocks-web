@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from './Browse.scss';
+import RockModal from "./RockModal"
 class Browse extends React.Component {
 
   render() {
@@ -19,6 +20,7 @@ class Browse extends React.Component {
             </li>
           ))}
         </ul>
+        <RockModal color={'green'} rock={friendRocks.rocks[0]}/>
       </div>
     );
   }
