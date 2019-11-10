@@ -1,10 +1,14 @@
+html {
+  height: 100%;
+}
 body {
   font-family: 'Quattrocento', serif;
   // font-family: 'Lato', sans-serif;
   color: #383838;
   font-size: large;
-  width: 400px;
-  height: 600px;
+  min-height: 100%;
+  margin: 0 auto;
+  max-width: 400px;
   position: relative;
   margin: 0 auto;
 }
@@ -25,4 +29,18 @@ h2 {
   margin-top: 0.83em;
   margin-bottom: 0.83em;
   font-weight: bold;
+}
+
+button {
+  background: #f6f6f6;
+  border: 1px solid grey;
+  border-radius: 3px;
+  padding: 3px 7px;
+
+}
+button:hover {
+  background-color: white;
+}
+button:active {
+  background-color: #eeeeee;
 }

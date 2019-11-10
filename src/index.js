@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './basicStyles.scss';
+import styles from './index.scss';
 import RockList from './RockList';
 import Browse from './components/Browse';
 import Auth from './Auth';

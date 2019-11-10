@@ -1,6 +1,8 @@
 import React from 'react';
 import styles from './Browse.scss';
 import RockModal from "./RockModal"
+import RockPreview from "./RockPreview"
+
 class Browse extends React.Component {
 
   constructor(props){
@@ -16,7 +18,7 @@ class Browse extends React.Component {
     })
   }
 
-  handleClose = (rock) => {
+  hideRockModal = () => {
     this.setState({
       viewingRock: null
     })
@@ -33,16 +35,13 @@ class Browse extends React.Component {
         <h2 className={styles["friend"]}>{friendRocks.sender.name}</h2><p></p>
         <ul>
           {friendRocks.rocks.map((rock,index) => (
-            <li onClick={ () => this.viewRock(rock) } className={styles["rock-item"]}>
-              <a href={rock.url}>
-                <p className={styles["title"]}>{rock.title}</p>
-              </a>
-              <p>{rock.description}</p>
+            <li onClick={ () => this.viewRock(rock) }>
+              <RockPreview rock={rock}/>
             </li>
           ))}
         </ul>
         { viewingRock && (
-          <RockModal rock={viewingRock} handleClose={this.hideModal}/>
+          <RockModal rock={viewingRock} handleClose={this.hideRockModal}/>
         )}
       </div>
     );

@@ -1,9 +1,10 @@
 .modal-overlay {
-  position: absolute;
+  position: fixed;
   top: 0;
   bottom: 0;
-  width: 100%;
-  height: 100%;
+  left: 0;
+  right: 0;
+  background-color: #f5f5f5c2;
 }
 
 .modal {
@@ -12,18 +13,32 @@
   top: 50%;
   transform: translate(-50%, -50%);
   background: white;
-  width: 300px;
-  height: 300px;
+  width: 90%;
+  height: 90%;
   border: 2px solid;
   border-color: #c3c0bc;
+  box-sizing: border-box;
 }
 
 .content {
-  padding: 10px;
+  padding: 40px 20px;
   display: flex;
+  flex-direction: column;
 }
 
 .close-button {
+  position: absolute;
   top: 5px;
   right: 5px;
+}
+
+.link-section {
+  color: #00ace6;
+  position: relative;
+
+  icon {
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+  }
 }
