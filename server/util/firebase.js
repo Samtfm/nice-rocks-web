@@ -3,7 +3,7 @@ require('firebase/auth');
 require('firebase/database');
 // Initialize Firebase for the application
 
-const firebaseConfig = {
+export const firebaseConfig = {
   apiKey: "AIzaSyBcg_qECwUfEI5B84n79H7kvpMICvb5qWY",
   authDomain: "nice-rocks001.firebaseapp.com",
   databaseURL: "https://nice-rocks001.firebaseio.com",
