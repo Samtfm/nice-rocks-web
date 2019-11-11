@@ -1,0 +1,28 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #f5f5f5c2;
+}
+
+.modal {
+  position: relative;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  width: 90%;
+  height: 90%;
+  border: 2px solid;
+  border-color: #c3c0bc;
+  box-sizing: border-box;
+  padding: 40px 20px;
+}
+
+.close-button {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+}

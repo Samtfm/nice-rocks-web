@@ -62,11 +62,11 @@ app.get('/', (req, res) => {
   res.sendFile(global.appRoot + '/public/index.html');
 });
 
-app.get('/login', (req, res) => {
-  console.log('GET /login');
-	// res.cookie('XSRF-TOKEN', req.csrfToken());
-  res.sendFile(global.appRoot + '/public/login.html');
-});
+// app.get('/login', (req, res) => {
+//   console.log('GET /login');
+// 	// res.cookie('XSRF-TOKEN', req.csrfToken());
+//   res.sendFile(global.appRoot + '/public/login.html');
+// });
 
 app.use('/', express.static(global.appRoot + '/public'));
 // app.use(express.static(global.appRoot + 'public'));

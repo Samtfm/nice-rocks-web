@@ -1,9 +1,10 @@
 import React from 'react';
 import { withFirebase } from './FirebaseProvider';
 import Browse from './Browse';
+import SendRockLink from './SendRockLink';
 import { friendRocks } from '../demoData';
 
-const Welcome = (props) => {
+const Home = (props) => {
   const { user, firebaseLoaded, signOut, signInWithRedirect } = props.firebase;
   return (
     <div>
@@ -18,6 +19,7 @@ const Welcome = (props) => {
             <button onClick={signInWithRedirect}>{"login with google"}</button>
           )}
           <Browse friendRocks={friendRocks} />
+          <SendRockLink />
         </div>
       ) : (
         <div>Loading...</div>
@@ -26,4 +28,4 @@ const Welcome = (props) => {
   );
 };
 
-export default withFirebase(Welcome);
+export default withFirebase(Home);

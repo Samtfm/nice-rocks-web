@@ -1,0 +1,14 @@
+.form {
+  display: flex;
+  flex-direction: column;
+
+  h2 {
+    text-align: center;
+  }
+  textarea {
+    height: 100px;
+  }
+  input, textarea .tag-buttons {
+    margin-bottom: 10px
+  }
+}

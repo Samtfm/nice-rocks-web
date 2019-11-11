@@ -28,7 +28,6 @@ class Browse extends React.Component {
     const { friendRocks } = this.props;
     const { viewingRock } = this.state;
 
-
     return (
       <div>
         <h1 className={styles["page-title"]}>All rocks</h1><p></p>
@@ -40,8 +39,8 @@ class Browse extends React.Component {
             </li>
           ))}
         </ul>
-        { viewingRock && (
-          <RockModal rock={viewingRock} handleClose={this.hideRockModal}/>
+        {viewingRock && (
+          <RockModal rock={viewingRock} visible={Boolean(viewingRock)} handleClose={this.hideRockModal}/>
         )}
       </div>
     );

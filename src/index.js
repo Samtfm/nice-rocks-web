@@ -4,14 +4,14 @@ import styles from './index.scss';
 import RockList from './RockList';
 import Browse from './components/Browse';
 import Auth from './Auth';
-import Welcome from './components/Welcome';
+import Home from './components/Home';
 
 import FirebaseProvider from './components/FirebaseProvider';
 
 const Index = () => {
   return (
     <FirebaseProvider>
-      <Welcome />
+      <Home />
     </FirebaseProvider>
   );
 };
