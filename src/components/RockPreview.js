@@ -7,8 +7,8 @@ class RockPreview extends React.Component {
     const { rock } = this.props;
     return (
       <div className={styles["rock-item"]}>
-        <p className={styles["title"]}>{rock.title}</p>
-        <p className={styles['description']}>{rock.description}</p>
+        <p className={styles["title"]}>{rock.title || rock.url}</p>
+        <p className={styles['description']}>{rock.note}</p>
       </div>
     );
   }

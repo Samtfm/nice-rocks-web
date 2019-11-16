@@ -13,14 +13,14 @@ class RockModal extends React.Component {
           <section className={styles['link-section']}>
             <a href={rock.url}  >
               <h2>
-                {rock.title}
+                {rock.title || rock.url}
               </h2>
               <icon>O</icon>
             </a>
           </section>
           <section>
             <p>
-              {rock.description}
+              {rock.note}
             </p>
           </section>
           <section>

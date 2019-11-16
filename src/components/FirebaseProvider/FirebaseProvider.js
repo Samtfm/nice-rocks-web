@@ -8,24 +8,28 @@ export default class FirebaseProvider extends React.Component {
     this.state = {
       user: null,
       firebaseLoaded: false,
+      db: null,
       signOut: signOut,
       signInWithRedirect: signInWithRedirect,
+      localStore: {
+        users: {}
+      }
     };
   }
 
   componentDidMount(){
-    initFirebase(user => {
-      console.log(user);
+    initFirebase((firebase, user) => {
+      window.fb = firebase
       this.setState({
         user: user,
         firebaseLoaded: true,
+        db: firebase.firestore(),
       });
     });
   }
 
-  setColor(color) {
-     this.setState({color});
-  }
+
+
   render() {
     return (
       <FirebaseContext.Provider value={{

@@ -13,13 +13,12 @@ class SendRockModal extends React.Component {
   }
 
   sendRock = () => {
-    console.log("send!")
     const { url, note } = this.state;
     const newRock = {
       'url': url,
       'note': note,
+      // 'timestamp': firebase.firestore.FieldValue.serverTimestamp()
     }
-    console.log(newRock)
     this.setState({
       disableSubmit: true,
     })

@@ -19,7 +19,7 @@ export const initFirebase = (callback) => {
     if (!user) {
       attempSignInFromRedirect();
     }
-    callback(user);
+    callback(firebase, user);
   });
 };
 
@@ -31,12 +31,10 @@ export const signInWithRedirect = () => {
 };
 
 export const signOut = () => {
-  firebase.auth().signOut();
+  firebase.auth().signOut().then(() => location.reload());
 };
 
 export const getCurrentUser = () => firebase.auth().currentUser;
-
-
 
 const attempSignInFromRedirect = () => {
   firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL).then(() => {

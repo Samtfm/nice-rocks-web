@@ -7,6 +7,7 @@ export const FirebaseContext = React.createContext(
     firebase: {
        user: null,
        firebaseLoaded: false,
+       db: null,
     }
   }
 );
