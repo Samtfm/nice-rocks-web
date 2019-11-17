@@ -25,17 +25,17 @@ class Browse extends React.Component {
   }
 
   render() {
-    const { friendRocks } = this.props;
+    const { rocks } = this.props;
     const { viewingRock } = this.state;
     return (
       <div>
         <h1 className={styles["page-title"]}>All rocks</h1><p></p>
-        {friendRocks.rocks.length > 0 && (
+        {rocks.length > 0 && (
           <div>
-            <h2 className={styles["friend"]}>from: {friendRocks.rocks[0].fromUser.displayName}</h2><p></p>
+            <h2 className={styles["friend"]}>from: {rocks[0].fromUser.displayName}</h2><p></p>
             <ul>
-              {friendRocks.rocks.map((rock,index) => (
-                <li onClick={ () => this.viewRock(rock) }>
+              {rocks.map((rock,index) => (
+                <li key={rock.id} onClick={ () => this.viewRock(rock) }>
                   <RockPreview rock={rock}/>
                 </li>
               ))}

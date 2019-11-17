@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from './SendRockModal.scss';
 import Modal from './Modal';
+import { withFirebase } from './FirebaseProvider'
 
 class SendRockModal extends React.Component {
   constructor(props){
@@ -14,15 +15,16 @@ class SendRockModal extends React.Component {
 
   sendRock = () => {
     const { url, note } = this.state;
+    const { firestoreConnection } = this.props.firebase;
     const newRock = {
       'url': url,
       'note': note,
-      // 'timestamp': firebase.firestore.FieldValue.serverTimestamp()
     }
     this.setState({
       disableSubmit: true,
     })
-    // firebase.database.ref('rocks').push().set(newRock)
+    // TODO: post rocks (missing user ids)
+    // firestoreConnection.postRock(newRock)
   }
 
   handleFormChange = (event) => {
@@ -72,4 +74,4 @@ class SendRockModal extends React.Component {
   }
 }
 
-export default SendRockModal;
+export default withFirebase(SendRockModal);

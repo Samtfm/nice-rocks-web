@@ -1,5 +1,6 @@
 import React, { PropTypes, Children } from 'react';
 import { initFirebase, signOut, signInWithRedirect } from './util';
+import FirestoreConnection from './FirestoreConnection';
 
 import { FirebaseContext } from './firebase-context';
 export default class FirebaseProvider extends React.Component {
@@ -7,8 +8,6 @@ export default class FirebaseProvider extends React.Component {
     super();
     this.state = {
       user: null,
-      firebaseLoaded: false,
-      db: null,
       signOut: signOut,
       signInWithRedirect: signInWithRedirect,
       localStore: {
@@ -20,10 +19,13 @@ export default class FirebaseProvider extends React.Component {
   componentDidMount(){
     initFirebase((firebase, user) => {
       window.fb = firebase
+      const localStore = {
+        users: {}
+      }
       this.setState({
         user: user,
-        firebaseLoaded: true,
-        db: firebase.firestore(),
+        firestoreConnection: new FirestoreConnection(firebase.firestore(), localStore),
+        localStore: localStore,
       });
     });
   }
