@@ -1,5 +1,6 @@
 import React from 'react';
 import SendRockModal from "./SendRockModal"
+import styles from "./SendRockLink.scss"
 
 class Browse extends React.Component {
 
@@ -27,7 +28,7 @@ class Browse extends React.Component {
 
     return (
       <React.Fragment>
-        <button onClick={this.showModal}>Send Rock</button>
+        <button className={styles['floating-button']} onClick={this.showModal}>+</button>
         <SendRockModal visible={modalVisible} handleClose={this.hideModal}/>
       </React.Fragment>
     );
