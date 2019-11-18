@@ -1,7 +1,8 @@
 import React from 'react';
 import styles from './SendRockModal.scss';
 import Modal from './Modal';
-import { withFirebase } from './FirebaseProvider'
+import { withFirebase } from './FirebaseProvider';
+import UserSelector from './UserSelector';
 
 class SendRockModal extends React.Component {
   constructor(props){
@@ -53,7 +54,7 @@ class SendRockModal extends React.Component {
       <Modal visible={visible} handleClose={handleClose}>
         <section className={styles['form']}>
           <h2>Send rock</h2>
-
+          <UserSelector />
           <label htmlFor="note">Note:</label>
           <textarea id="note" name="note" value={this.state.note} onChange={this.handleFormChange} />
           <br/>
