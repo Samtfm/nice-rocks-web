@@ -35,7 +35,18 @@ class SendRockModal extends React.Component {
     this.setState({
       [name]: value,
     });
+  }
 
+  handleUrlChange = (event) => {
+    const url = event.target.value
+    // get share title
+
+
+    // update title input with the share title
+
+
+    // do the usual form update
+    this.handleFormChange(event)
   }
 
   setRecipient = (user) => {
@@ -72,7 +83,10 @@ class SendRockModal extends React.Component {
           <br/>
 
           <label htmlFor="url">Url:</label>
-          <input type="text" id="url" name="url" value={this.state.url} onChange={this.handleFormChange} />
+          <input type="text" id="url" name="url" value={this.state.url} onChange={this.handleUrlChange} />
+          <br/>
+          <label htmlFor="title">Title:</label>
+          <input type="text" id="title" name="title" value={this.state.title} onChange={this.handleFormChange} />
           <br/>
           <button disabled={formNotReady || disableSubmit} onClick={this.sendRock}>Send!</button>
         </section>
