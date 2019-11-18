@@ -15,17 +15,17 @@ class SendRockModal extends React.Component {
   }
 
   sendRock = () => {
-    const { url, note } = this.state;
+    const { url, note, recipient } = this.state;
     const { firestoreConnection } = this.props.firebase;
     const newRock = {
       'url': url,
       'note': note,
+      'toUser': recipient.id,
     }
     this.setState({
       disableSubmit: true,
     })
-    // TODO: post rocks (missing user ids)
-    // firestoreConnection.postRock(newRock)
+    firestoreConnection.postRock(newRock)
   }
 
   handleFormChange = (event) => {
@@ -36,6 +36,12 @@ class SendRockModal extends React.Component {
       [name]: value,
     });
 
+  }
+
+  setRecipient = (user) => {
+    this.setState({
+      recipient: user,
+    });
   }
 
   validateForm = () => {
@@ -54,7 +60,7 @@ class SendRockModal extends React.Component {
       <Modal visible={visible} handleClose={handleClose}>
         <section className={styles['form']}>
           <h2>Send rock</h2>
-          <UserSelector />
+          <UserSelector onSet={this.setRecipient} />
           <label htmlFor="note">Note:</label>
           <textarea id="note" name="note" value={this.state.note} onChange={this.handleFormChange} />
           <br/>

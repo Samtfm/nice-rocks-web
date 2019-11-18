@@ -24,7 +24,7 @@ export default class FirebaseProvider extends React.Component {
       }
       this.setState({
         user: user,
-        firestoreConnection: new FirestoreConnection(firebase.firestore(), localStore),
+        firestoreConnection: new FirestoreConnection(firebase, localStore),
         localStore: localStore,
       });
     });

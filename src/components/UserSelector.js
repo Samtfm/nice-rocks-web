@@ -28,6 +28,9 @@ class UserSelector extends React.Component {
       selectedUser: user,
       suggestions: [],
     })
+
+    // call the onSet function to alert whatever is using this component that a user has been selected
+    this.props.onSet(user)
   }
 
   resetState = () => {
@@ -57,6 +60,7 @@ class UserSelector extends React.Component {
             className={styles['recipient-input']}
             type="text"
             name="recipientInput"
+            autoComplete="off"
             value={this.state.recipient}
             onChange={this.handleChange}
           />
@@ -66,7 +70,7 @@ class UserSelector extends React.Component {
           <ul className={styles['dropdown']}>
           {suggestions.map(suggestion => (
             <li key={suggestion.id} onClick={() => this.selectUser(suggestion)}>
-            {suggestion.displayName}
+              {suggestion.displayName}
             </li>
           ))}
           </ul>

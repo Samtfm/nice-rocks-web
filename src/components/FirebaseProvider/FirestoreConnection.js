@@ -1,6 +1,7 @@
 class FirestoreConnection{
-  constructor(db, localStore){
-    this.db = db;
+  constructor(firebase, localStore){
+    this.db = firebase.firestore();
+    this.firebase = firebase;
     this.localStore = localStore;
   }
 
@@ -61,7 +62,9 @@ class FirestoreConnection{
       {
         note: data.note,
         url: data.url,
-        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+        toUser: data.toUser,
+        fromUser: this.firebase.auth().currentUser.uid,
+        timestamp: this.firebase.firestore.FieldValue.serverTimestamp(),
       }
     )
   }
