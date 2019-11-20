@@ -3,6 +3,21 @@ import styles from './Browse.scss';
 import RockModal from "./RockModal"
 import RockPreview from "./RockPreview"
 
+const groupRocksByUser = (rocks) => {
+  const userGroupsMap = {}
+  rocks.forEach(rock => {
+    if (!userGroupsMap[rock.fromUser.id]) {
+      userGroupsMap[rock.fromUser.id] = {
+        fromUser: rock.fromUser,
+        rocks: [],
+      }
+    }
+    userGroupsMap[rock.fromUser.id].rocks.push(rock)
+  })
+  return Object.values(userGroupsMap)
+}
+
+
 class Browse extends React.Component {
 
   constructor(props){
@@ -25,25 +40,25 @@ class Browse extends React.Component {
   }
 
   render() {
-    const { rocks } = this.props;
+    const groupedRocks = groupRocksByUser(this.props.rocks)
     const { viewingRock } = this.state;
     return (
       <div>
-        <h1 className={styles["page-title"]}>All rocks</h1><p></p>
-        {rocks.length > 0 && (
-          <div>
-            <h2 className={styles["friend"]}>from: {rocks[0].fromUser.displayName}</h2><p></p>
+        <h1 className={styles["page-title"]}>All rocks</h1>
+        {groupedRocks.map(group => (
+          <section key={group.fromUser.id}>
+            <h2 className={styles["sender-name"]}>from {group.fromUser.displayName}</h2>
             <ul>
-              {rocks.map((rock,index) => (
+              {group.rocks.map((rock,index) => (
                 <li key={rock.id} onClick={ () => this.viewRock(rock) }>
                   <RockPreview rock={rock}/>
                 </li>
               ))}
             </ul>
-            {viewingRock && (
-              <RockModal rock={viewingRock} visible={Boolean(viewingRock)} handleClose={this.hideRockModal}/>
-            )}
-          </div>
+          </section>
+        ))}
+        {viewingRock && (
+          <RockModal rock={viewingRock} visible={Boolean(viewingRock)} handleClose={this.hideRockModal}/>
         )}
       </div>
     );
