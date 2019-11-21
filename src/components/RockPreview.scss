@@ -8,7 +8,11 @@
 
 .title {
   font-weight: bold;
-  color: #00ace6
+  color: #00ace6;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  margin-bottom: 8px;
 }
 
 .description {

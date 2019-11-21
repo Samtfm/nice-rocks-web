@@ -3,13 +3,32 @@
   flex-direction: column;
 }
 
-.link-section {
-  color: #00ace6;
+.link-headline {
   position: relative;
+  margin-bottom: 20px;
 
-  icon {
+  .url {
+    color: #00ace6;
+    margin-bottom: 20px;
+    overflow: hidden;
+    overflow-wrap: break-word;
+    text-overflow: ellipsis;
+    max-height: 3em;
+  }
+
+  color: #00ace6;
+
+  .open-icon {
+    font-size: 20px;
     position: absolute;
     right: 20px;
-    bottom: 20px;
+    bottom: 0px;
+    background: white;
+    padding: 10px;
   }
+}
+
+.basic-headline {
+  color: black;
+  margin-bottom: 20px;
 }
