@@ -58,7 +58,7 @@ class FirestoreConnection{
   }
 
   postRock = (data) => {
-    this.db.collection("rocks").add(
+    return this.db.collection("rocks").add(
       {
         note: data.note,
         url: data.url,

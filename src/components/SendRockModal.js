@@ -17,6 +17,7 @@ class SendRockModal extends React.Component {
   sendRock = () => {
     const { url, note, recipient } = this.state;
     const { firestoreConnection } = this.props.firebase;
+    const { handleClose } = this.props;
     const newRock = {
       'url': url,
       'note': note,
@@ -24,8 +25,10 @@ class SendRockModal extends React.Component {
     }
     this.setState({
       disableSubmit: true,
-    })
-    firestoreConnection.postRock(newRock)
+    });
+    firestoreConnection.postRock(newRock).then(() => {
+      handleClose();
+    });
   }
 
   handleFormChange = (event) => {
