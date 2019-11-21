@@ -1,5 +1,5 @@
 .modal-overlay {
-  position: fixed;
+  position: absolute;
   top: 0;
   bottom: 0;
   left: 0;
@@ -14,7 +14,7 @@
   transform: translate(-50%, -50%);
   background: white;
   width: 90%;
-  height: 90%;
+  min-height: 90%;
   border: 2px solid;
   border-color: #c3c0bc;
   box-sizing: border-box;
