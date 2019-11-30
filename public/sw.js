@@ -16,12 +16,12 @@ var preLoad = function(){
   });
 };
 
-self.addEventListener("fetch", function(event) {
-  event.respondWith(checkResponse(event.request).catch(function() {
-    return returnFromCache(event.request);
-  }));
-  event.waitUntil(addToCache(event.request));
-});
+// self.addEventListener("fetch", function(event) {
+//   event.respondWith(checkResponse(event.request).catch(function() {
+//     return returnFromCache(event.request);
+//   }));
+//   event.waitUntil(addToCache(event.request));
+// });
 
 var checkResponse = function(request){
   return new Promise(function(fulfill, reject) {

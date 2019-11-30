@@ -28,6 +28,8 @@ class SendRockModal extends React.Component {
     });
     firestoreConnection.postRock(newRock).then(() => {
       handleClose();
+    }).catch(error => {
+      console.log(error);
     });
   }
 

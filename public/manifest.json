@@ -6,7 +6,7 @@
   "display": "standalone",
   "orientation": "portrait",
   "scope": "/",
-  "start_url": "http://nicerocks.herokuapp.com/",
+  "start_url": "https://nicerocks.herokuapp.com/",
   "icons": [
       {
           "src": "./pwa_icon_192.png",
