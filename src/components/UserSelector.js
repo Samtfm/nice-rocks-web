@@ -10,25 +10,40 @@ class UserSelector extends React.Component {
       suggestions: Object.values(this.props.firebase.localStore.users),
       selectedUser: null,
       recipientInput: '',
+      focused: false,
     }
+    this.emailCheckTimeout = null;
   }
   componentDidMount(){
     this.inputRef.focus();
   }
 
   handleChange = (event) => {
+    const email = event.target.value
     this.setState({
-      recipientInput: event.target.value,
+      recipientInput: email,
     });
-
+    if (/\S+@\S+\.\S+/.test(email)){
+      clearTimeout(this.emailCheckTimeout)
+      this.emailCheckTimeout = setTimeout(() => {
+        this.props.firebase.firestoreConnection.getUser(email).then(user => {
+          this.selectUser(user)
+        }).catch(() => {
+          this.setState({
+            errorMessage: 'user not found'
+          });
+        })
+      }, 800);
+    }
   }
 
   selectUser = (user) => {
     this.setState({
       selectedUser: user,
       suggestions: [],
+      focused: false,
+      errorMessage: null,
     })
-
     // call the onSet function to alert whatever is using this component that a user has been selected
     this.props.onSet(user)
   }
@@ -37,16 +52,16 @@ class UserSelector extends React.Component {
     this.setState({
       suggestions: Object.values(this.props.firebase.localStore.users),
       selectedUser: null,
-      recipientInput: '',
     }, () => {
       this.inputRef.focus();
     });
   }
 
   render() {
-    const { suggestions, selectedUser, focused } = this.state;
+    const { suggestions, selectedUser, focused, errorMessage } = this.state;
     return  (
-      <div className={styles['component']} >
+      <div className={styles['user-selector']} >
+        <p className={styles['error-message']}>{errorMessage}</p>
         {selectedUser ? (
           <div className={styles['filled-input']}>
             <span>{selectedUser.displayName}</span>
@@ -56,8 +71,9 @@ class UserSelector extends React.Component {
           <input
             ref={(ref) => { this.inputRef = ref; }}
             onFocus={() => this.setState({focused: true})}
-            onBlur={() => setImmediate(() => this.setState({focused: false}))}
+            onBlur={() => setTimeout(() => this.setState({focused: false}), 200)}
             className={styles['recipient-input']}
+            placeholder={focused ? "example@bestmail.net" : "Select contact"}
             type="text"
             name="recipientInput"
             autoComplete="off"
@@ -76,8 +92,6 @@ class UserSelector extends React.Component {
           </ul>
           </div>
         )}
-
-
       </div>
     );
   }

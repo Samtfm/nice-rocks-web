@@ -1,5 +1,10 @@
-.component {
+.user-selector {
   margin-bottom: 10px;
+  position: relative;
+}
+
+.error-message {
+  color: red;
 }
 
 .dropdown-container {

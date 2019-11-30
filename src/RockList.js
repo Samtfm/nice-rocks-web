@@ -20,7 +20,6 @@ class RockList extends React.Component {
 
   render() {
     const { rocks } = this.state;
-    console.log(rocks)
     window.rocks = rocks
     return (
       <div>

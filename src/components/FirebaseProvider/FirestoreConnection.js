@@ -44,12 +44,11 @@ class FirestoreConnection{
         const missingUserRequests = [...userSet].filter(id => {
           return !this.localStore.users[id]
         }).map(id => {
-          return this.db.collection('users').doc(id).get();
+          return this.db.collection("users").doc(id).get();
         });
         Promise.all(missingUserRequests).then(docs => {
           docs.map(doc => {
-            const user = doc.data();
-            this.localStore.users[doc.id] = user;
+            this.localStore.users[doc.id] = doc.data();;
           })
           resolve();
         });
@@ -57,6 +56,21 @@ class FirestoreConnection{
         reject(e)
       }
     })
+  }
+
+  getUser = (email) => {
+    return new Promise((resolve, reject) => {
+      this.db.collection("users").where('email', '==', email).get().then((querySnapshot) => {
+        const doc = querySnapshot.docs.length ? querySnapshot.docs[0] : null
+        if (doc) {
+          const user = doc.data();;
+          this.localStore.users[doc.id] = user;
+          resolve(user);
+        } else {
+          reject();
+        }
+      });
+    });
   }
 
   postRock = (data) => {
