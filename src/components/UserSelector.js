@@ -14,9 +14,6 @@ class UserSelector extends React.Component {
     }
     this.emailCheckTimeout = null;
   }
-  componentDidMount(){
-    this.inputRef.focus();
-  }
 
   handleChange = (event) => {
     const email = event.target.value

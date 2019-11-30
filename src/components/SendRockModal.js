@@ -121,9 +121,28 @@ class SendRockModal extends React.Component {
         <section className={styles['form']}>
           <h2>Send rock</h2>
           <p className={styles['error-message']}>{errorMessage}</p>
-          <input type="text" placeholder="URL (optional)" name="url" value={this.state.url} onChange={this.handleUrlChange} />
-          <input type="text" placeholder="Title" name="title" value={this.state.title} onChange={this.handleFormChange} />
-          <textarea placeholder="Say something about your rock..." name="note" value={this.state.note} onChange={this.handleFormChange} />
+          <input
+            autocomplete="off"
+            type="text"
+            placeholder="URL (optional)"
+            name="url"
+            value={this.state.url}
+            onChange={this.handleUrlChange}
+          />
+          <input type="text"
+            autocomplete="off"
+            placeholder="Title"
+            name="title"
+            value={this.state.title}
+            onChange={this.handleFormChange}
+          />
+          <textarea
+            autocomplete="off"
+            placeholder="Say something about your rock..."
+            name="note"
+            value={this.state.note}
+            onChange={this.handleFormChange}
+          />
           <CharLimit current={this.state.note.length} limit={charLimits.note} />
           <br/>
           <UserSelector onSet={this.setRecipient} />
