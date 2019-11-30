@@ -1,7 +1,7 @@
 .form {
   display: flex;
   flex-direction: column;
-
+  position: relative;
   h2 {
     text-align: center;
   }
@@ -15,4 +15,16 @@
 
 .error-message {
   color: red;
+}
+
+.success-overlay {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background: #ffffffc2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: green;
+  font-size: 26px;
 }

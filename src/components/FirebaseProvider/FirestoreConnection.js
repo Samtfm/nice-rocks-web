@@ -76,9 +76,7 @@ class FirestoreConnection{
   postRock = (data) => {
     return this.db.collection("rocks").add(
       {
-        note: data.note,
-        url: data.url,
-        toUser: data.toUser,
+        ...data,
         fromUser: this.firebase.auth().currentUser.uid,
         timestamp: this.firebase.firestore.FieldValue.serverTimestamp(),
       }

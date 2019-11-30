@@ -32,18 +32,19 @@ class SendRockModal extends React.Component {
       title: '',
       disableSubmit: false,
       errorMessage: null,
-      submitted: true,
+      submitted: false,
     }
   }
 
   sendRock = () => {
-    const { url, note, recipient } = this.state;
+    const { url, note, title, recipient } = this.state;
     const { firestoreConnection } = this.props.firebase;
     const { handleClose } = this.props;
     const newRock = {
       'url': url,
       'note': note,
       'toUser': recipient.id,
+      'title': title,
     }
     this.setState({
       disableSubmit: true,
@@ -59,11 +60,12 @@ class SendRockModal extends React.Component {
           url: '',
           title: '',
           note: '',
+          submitted: false,
         });
       }, 1500)
     }).catch(error => {
       this.setState({
-        disableSubmit: true,
+        disableSubmit: false,
         errorMessage: 'Something went wrong, please try again',
       });
     });
@@ -111,7 +113,7 @@ class SendRockModal extends React.Component {
 
   render() {
     const { visible, handleClose } = this.props;
-    const { disableSubmit, errorMessage } = this.state;
+    const { disableSubmit, errorMessage, submitted } = this.state;
     const formNotReady = !this.validateForm()
 
     return  (
@@ -135,6 +137,11 @@ class SendRockModal extends React.Component {
           <br/>
           <br/>
           <button disabled={formNotReady || disableSubmit} onClick={this.sendRock}>Send!</button>
+          {submitted && (
+            <div className={styles['success-overlay']}>
+              <div>Sent!</div>
+            </div>
+          )}
         </section>
       </Modal>
     );
