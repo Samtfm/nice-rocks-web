@@ -1,10 +1,12 @@
+@import "src/colors";
+
 html {
   height: 100%;
 }
 body {
   font-family: 'Quattrocento', serif;
   // font-family: 'Lato', sans-serif;
-  color: #383838;
+  color: $gray-dark;
   font-size: large;
   min-height: 100%;
   margin: 0 auto;
@@ -40,10 +42,10 @@ button {
 
 }
 button:hover {
-  background-color: white;
+  filter: brightness(105%);
 }
 button:active {
-  background-color: #eeeeee;
+  filter: brightness(95%);
 }
 button:disabled {
   background-color: #f6f6f6;

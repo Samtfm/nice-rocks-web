@@ -1,5 +1,7 @@
+@import "src/colors";
+
 .sender-name {
-  color: #919191;
+  color: $gray-medium;
   font-size: 24px;
   margin-bottom: 8px;
 }
