@@ -1,15 +1,17 @@
 import React, { PropTypes, Children } from 'react';
 import { initFirebase, signOut, signInWithRedirect } from './util';
 import FirestoreConnection from './FirestoreConnection';
-
 import { FirebaseContext } from './firebase-context';
+
+
 export default class FirebaseProvider extends React.Component {
   constructor() {
     super();
     this.state = {
-      user: null,
+      currentUser: null,
       signOut: signOut,
       signInWithRedirect: signInWithRedirect,
+      firestoreConnection: null,
       localStore: {
         users: {}
       }
@@ -23,7 +25,7 @@ export default class FirebaseProvider extends React.Component {
         users: {}
       }
       this.setState({
-        user: firebase.auth().currentUser,
+        currentUser: firebase.auth().currentUser,
         firestoreConnection: new FirestoreConnection(firebase, localStore),
         localStore: localStore,
       });

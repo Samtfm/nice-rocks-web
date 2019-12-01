@@ -23,23 +23,25 @@ const CharLimit = ({limit, current}) => {
   } else return null;
 }
 
+const defaultState = {
+  url: '',
+  note: '',
+  title: '',
+  disableSubmit: false,
+  errorMessage: null,
+  submitted: false,
+}
+
 class SendRockModal extends React.Component {
   constructor(props){
     super(props);
-    this.state = {
-      url: '',
-      note: '',
-      title: '',
-      disableSubmit: false,
-      errorMessage: null,
-      submitted: false,
-    }
+    this.state = defaultState;
   }
 
   sendRock = () => {
     const { url, note, title, recipient } = this.state;
-    const { firestoreConnection } = this.props.firebase;
-    const { handleClose } = this.props;
+    const { firebase, handleClose } = this.props;
+
     const newRock = {
       'url': url,
       'note': note,
@@ -49,19 +51,14 @@ class SendRockModal extends React.Component {
     this.setState({
       disableSubmit: true,
     });
-    firestoreConnection.postRock(newRock).then(() => {
+    firebase.firestoreConnection.postRock(newRock).then(() => {
       this.setState({
         submitted: true,
         errorMessage: null,
       });
       setTimeout(() => {
         handleClose();
-        this.setState({
-          url: '',
-          title: '',
-          note: '',
-          submitted: false,
-        });
+        this.setState(defaultState);
       }, 1500)
     }).catch(error => {
       this.setState({
@@ -151,9 +148,6 @@ class SendRockModal extends React.Component {
             <button disabled>Listen</button>
             <button disabled>Watch</button>
           </span>
-          <br/>
-
-          <br/>
           <br/>
           <button disabled={formNotReady || disableSubmit} onClick={this.sendRock}>Send!</button>
           {submitted && (

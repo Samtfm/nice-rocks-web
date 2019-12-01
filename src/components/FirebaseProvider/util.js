@@ -15,11 +15,11 @@ export const initFirebase = (callback) => {
 
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
-  return firebase.auth().onAuthStateChanged(function(user) {
-    if (!user) {
+  return firebase.auth().onAuthStateChanged(function(currentUser) {
+    if (!currentUser) {
       attempSignInFromRedirect();
     }
-    callback(firebase, user);
+    callback(firebase, currentUser);
   });
 };
 

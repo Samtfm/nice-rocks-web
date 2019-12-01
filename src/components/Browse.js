@@ -2,6 +2,7 @@ import React from 'react';
 import styles from './Browse.scss';
 import RockModal from "./RockModal"
 import RockPreview from "./RockPreview"
+import { withFirebase } from './FirebaseProvider';
 
 const groupRocksByUser = (rocks) => {
   const userGroupsMap = {}
@@ -24,7 +25,20 @@ class Browse extends React.Component {
     super(props);
     this.state = {
       viewingRock: null,
+      recievedRocks: [],
     }
+  }
+
+  componentDidMount(){
+    const { firestoreConnection, currentUser, localStore } = this.props.firebase;
+    if (!currentUser) {
+      return;
+    }
+    firestoreConnection.getRocks("toUser", "==", currentUser.uid).then(rocks => {
+      this.setState({
+        recievedRocks: rocks,
+      });
+    });
   }
 
   viewRock = (rock) => {
@@ -40,8 +54,8 @@ class Browse extends React.Component {
   }
 
   render() {
-    const groupedRocks = groupRocksByUser(this.props.rocks)
-    const { viewingRock } = this.state;
+    const { viewingRock, recievedRocks } = this.state;
+    const groupedRocks = groupRocksByUser(recievedRocks);
     return (
       <div>
         <h1 className={styles["page-title"]}>All rocks</h1>
@@ -65,4 +79,4 @@ class Browse extends React.Component {
   }
 }
 
-export default Browse;
+export default withFirebase(Browse);

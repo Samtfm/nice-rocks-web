@@ -5,7 +5,7 @@ export const FirebaseContext = React.createContext(
 // matching Provider above it in the tree, useful for testing
   {
     firebase: {
-       user: null,
+       currentUser: null,
        firebaseLoaded: false,
        firestoreConnection: null,
        localStore: null,
