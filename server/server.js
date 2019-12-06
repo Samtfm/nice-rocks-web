@@ -56,7 +56,8 @@ app.use(function(req, res, next) {
 	next();
 });
 
-app.get('/', (req, res) => {
+//this GET must cover all react routes for direct access via url.
+app.get(['/', '/login'], (req, res) => {
   console.log('GET /');
 	// res.cookie('XSRF-TOKEN', req.csrfToken());
   res.sendFile(global.appRoot + '/public/index.html');
