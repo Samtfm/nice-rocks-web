@@ -1,6 +1,6 @@
 import React, { PropTypes, Children } from 'react';
-import { initFirebase, signOut, signInWithRedirect } from './util';
-import FirestoreConnection from './FirestoreConnection';
+import { initFirebase, signOut, signInWithRedirect } from '../../firebase/util';
+import FirestoreConnection from '../../firebase/FirestoreConnection';
 import { FirebaseContext } from './firebase-context';
 import Spinner from './Spinner';
 

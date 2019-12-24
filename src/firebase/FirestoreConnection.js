@@ -1,15 +1,17 @@
+import * as firebase from "firebase/app";
+import "firebase/auth";
+import { database } from './util';
+
 class FirestoreConnection{
   constructor(firebase, localStore){
-    this.db = firebase.firestore();
     this.firebase = firebase;
     this.localStore = localStore;
   }
 
-  //
   //  example: getRocks("toUser", "==", user.uid)
   getRocks = (field, comparitor, value) => {
-    const rocksRef = this.db.collection("rocks");
-    const usersRef = this.db.collection("users");
+    const rocksRef = database.collection("rocks");
+    const usersRef = database.collection("users");
     return new Promise((resolve, reject) => {
       try {
         rocksRef.where(field, comparitor, value).get().then((querySnapshot) => {
@@ -44,7 +46,7 @@ class FirestoreConnection{
         const missingUserRequests = [...userSet].filter(id => {
           return !this.localStore.users[id]
         }).map(id => {
-          return this.db.collection("users").doc(id).get();
+          return database.collection("users").doc(id).get();
         });
         Promise.all(missingUserRequests).then(docs => {
           docs.map(doc => {
@@ -60,7 +62,7 @@ class FirestoreConnection{
 
   getUser = (email) => {
     return new Promise((resolve, reject) => {
-      this.db.collection("users").where('email', '==', email).get().then((querySnapshot) => {
+      database.collection("users").where('email', '==', email).get().then((querySnapshot) => {
         const doc = querySnapshot.docs.length ? querySnapshot.docs[0] : null
         if (doc) {
           const user = doc.data();;
@@ -74,7 +76,7 @@ class FirestoreConnection{
   }
 
   postRock = (data) => {
-    return this.db.collection("rocks").add(
+    return database.collection("rocks").add(
       {
         ...data,
         fromUser: this.firebase.auth().currentUser.uid,

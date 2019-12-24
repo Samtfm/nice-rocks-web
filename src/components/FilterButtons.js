@@ -1,14 +1,18 @@
 import React from 'react';
 import styles from './FilterButtons.scss';
+import { useDispatch, useSelector } from "react-redux";
+import { fetchRecievedRocks } from "../store/actions/rocks";
 
-class FilterButtons extends React.Component {
-
-  render() {
-    return (
-      <div>
-      </div>
-    );
-  }
+const FilterButtons = () => {
+  const rocks = useSelector(state => state.rocks);
+  const dispatch = useDispatch();
+  console.log(rocks)
+  return (
+    <div>
+      <div>Rocks</div>
+      <button onClick={() => dispatch(fetchRecievedRocks())}>get rocks</button>
+    </div>
+  );
 }
 
 export default FilterButtons;

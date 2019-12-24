@@ -9,11 +9,10 @@ import PrivateRoute from './components/PrivateRoute';
 
 import FirebaseProvider from './components/FirebaseProvider';
 import { BrowserRouter, Route, Link } from "react-router-dom";
+import { Provider } from 'react-redux';
+import configureStore from './store/store';
 
-
-// each route path must also be defined in the server as an alias for GET('/')
-
-const Index = () => {
+const App = () => {
   return (
     <FirebaseProvider>
       <BrowserRouter>
@@ -21,6 +20,14 @@ const Index = () => {
         <PrivateRoute exact path='/' component={Home} />
       </BrowserRouter>
     </FirebaseProvider>
+  )
+}
+
+const Index = () => {
+  return (
+    <Provider store={configureStore()}>
+      <App />
+    </Provider>
   );
 };
 

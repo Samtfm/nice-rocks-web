@@ -2,19 +2,23 @@ import * as firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
 
-export const initFirebase = (callback) => {
-  const firebaseConfig = {
-    apiKey: "AIzaSyBcg_qECwUfEI5B84n79H7kvpMICvb5qWY",
-    authDomain: "nice-rocks001.firebaseapp.com",
-    databaseURL: "https://nice-rocks001.firebaseio.com",
-    projectId: "nice-rocks001",
-    storageBucket: "nice-rocks001.appspot.com",
-    messagingSenderId: "572512032401",
-    appId: "1:572512032401:web:d8f614c7e58deb25611130"
-  };
+const firebaseConfig = {
+  apiKey: "AIzaSyBcg_qECwUfEI5B84n79H7kvpMICvb5qWY",
+  authDomain: "nice-rocks001.firebaseapp.com",
+  databaseURL: "https://nice-rocks001.firebaseio.com",
+  projectId: "nice-rocks001",
+  storageBucket: "nice-rocks001.appspot.com",
+  messagingSenderId: "572512032401",
+  appId: "1:572512032401:web:d8f614c7e58deb25611130"
+};
 
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+
+export const database = firebase.firestore();
+export const currentUser = firebase.auth().currentUser;
+
+export const initFirebase = (callback) => {
   return firebase.auth().onAuthStateChanged(function(currentUser) {
     if (!currentUser) {
       attempSignInFromRedirect();

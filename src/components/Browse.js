@@ -2,6 +2,7 @@ import React from 'react';
 import styles from './Browse.scss';
 import RockModal from "./RockModal"
 import RockPreview from "./RockPreview"
+import FilterButtons from "./FilterButtons"
 import { withFirebase } from './FirebaseProvider';
 
 const groupRocksByUser = (rocks) => {
@@ -34,6 +35,7 @@ class Browse extends React.Component {
     if (!currentUser) {
       return;
     }
+    console.log(currentUser.uid)
     firestoreConnection.getRocks("toUser", "==", currentUser.uid).then(rocks => {
       this.setState({
         recievedRocks: rocks,
@@ -58,6 +60,7 @@ class Browse extends React.Component {
     const groupedRocks = groupRocksByUser(recievedRocks);
     return (
       <div>
+        <FilterButtons />
         <h1 className={styles["page-title"]}>All rocks</h1>
         {groupedRocks.map(group => (
           <section key={group.fromUser.id}>
