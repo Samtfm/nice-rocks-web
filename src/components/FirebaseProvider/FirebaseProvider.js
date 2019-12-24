@@ -2,6 +2,7 @@ import React, { PropTypes, Children } from 'react';
 import { initFirebase, signOut, signInWithRedirect } from './util';
 import FirestoreConnection from './FirestoreConnection';
 import { FirebaseContext } from './firebase-context';
+import Spinner from './Spinner';
 
 
 export default class FirebaseProvider extends React.Component {
@@ -35,12 +36,14 @@ export default class FirebaseProvider extends React.Component {
 
 
   render() {
-    return (
+    return this.state.firestoreConnection ? (
       <FirebaseContext.Provider value={{
           firebase: {...this.state}
        }}>
         {this.props.children}
       </FirebaseContext.Provider>
+    ) : (
+      <Spinner />
     )
   }
 }
