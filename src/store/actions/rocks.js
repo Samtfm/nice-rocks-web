@@ -7,6 +7,9 @@ import { fetchUsers } from './users';
 
 export const FETCH_ROCKS = 'FETCH_ROCKS'
 
+const FIVE_MINUTES = 1000*60*5
+
+
 export const fetchRocks = (field, comparitor, value) => (dispatch, getState) => {
   const rocksRef = database.collection("rocks");
   const usersRef = database.collection("users");
@@ -34,6 +37,18 @@ export const fetchRocks = (field, comparitor, value) => (dispatch, getState) => 
   }
 }
 
+let lastFetchedRecievedRocks = 0
 export const fetchRecievedRocks = () => (dispatch) => {
-  dispatch(fetchRocks("toUser", "==", getCurrentUser().uid));
+  if (Date.now() - lastFetchedRecievedRocks > FIVE_MINUTES) {
+    lastFetchedRecievedRocks = Date.now()
+    dispatch(fetchRocks("toUser", "==", getCurrentUser().uid));
+  }
+}
+
+let lastFetchedSentRocks = 0
+export const fetchSentRocks = () => (dispatch) => {
+  if (Date.now() - lastFetchedSentRocks > FIVE_MINUTES) {
+    lastFetchedSentRocks = Date.now()
+    dispatch(fetchRocks("fromUser", "==", getCurrentUser().uid));
+  }
 }

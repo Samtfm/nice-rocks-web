@@ -12,12 +12,16 @@ const Home = () => {
 
   return (
     <div>
-      <div>
-        {`Hi ${currentUser && currentUser.displayName} `}
-        <button onClick={signOut}>{"Log out"}</button>
-        <Browse />
-        <SendRockLink />
-      </div>
+      {currentUser && (
+        <div>
+          <div style={{'float': 'right'}}>
+            {`Hi ${currentUser.displayName} `}
+            <button onClick={signOut}>{"Log out"}</button>
+          </div>
+          <Browse />
+          <SendRockLink />
+        </div>
+      )}
     </div>
   );
 }
