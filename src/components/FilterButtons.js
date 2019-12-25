@@ -6,7 +6,6 @@ import { fetchRecievedRocks } from "../store/actions/rocks";
 const FilterButtons = () => {
   const rocks = useSelector(state => state.rocks);
   const dispatch = useDispatch();
-  console.log(rocks)
   return (
     <div>
       <div>Rocks</div>

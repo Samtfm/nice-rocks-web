@@ -2,22 +2,24 @@ import React from 'react';
 import { withFirebase } from './FirebaseProvider';
 import Browse from './Browse';
 import SendRockLink from './SendRockLink';
+import { useSelector } from "react-redux";
+import { signOut } from '../firebase/util';
 
-class Home extends React.Component {
-  render() {
-    const { currentUser, firestoreConnection, signOut, signInWithRedirect} = this.props.firebase;
+const Home = () => {
+  const currentUser = useSelector(
+    state => state.session.currentUser,
+  );
 
-    return (
+  return (
+    <div>
       <div>
-        <div>
-          {`Hi ${currentUser.displayName} `}
-          <button onClick={signOut}>{"Log out"}</button>
-          <Browse />
-          <SendRockLink />
-        </div>
+        {`Hi ${currentUser && currentUser.displayName} `}
+        <button onClick={signOut}>{"Log out"}</button>
+        <Browse />
+        <SendRockLink />
       </div>
-    );
-  }
+    </div>
+  );
 }
 
-export default withFirebase(Home);
+export default Home;

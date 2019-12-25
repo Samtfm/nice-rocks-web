@@ -1,85 +1,65 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styles from './Browse.scss';
 import RockModal from "./RockModal"
 import RockPreview from "./RockPreview"
 import FilterButtons from "./FilterButtons"
-import { withFirebase } from './FirebaseProvider';
+import { useDispatch, useSelector } from "react-redux";
+import { fetchRecievedRocks } from "../store/actions/rocks";
 
 const groupRocksByUser = (rocks) => {
   const userGroupsMap = {}
   rocks.forEach(rock => {
-    if (!userGroupsMap[rock.fromUser.id]) {
-      userGroupsMap[rock.fromUser.id] = {
-        fromUser: rock.fromUser,
+    if (!userGroupsMap[rock.fromUser]) {
+      userGroupsMap[rock.fromUser] = {
+        userId: rock.fromUser,
         rocks: [],
       }
     }
-    userGroupsMap[rock.fromUser.id].rocks.push(rock)
+    userGroupsMap[rock.fromUser].rocks.push(rock)
   })
   return Object.values(userGroupsMap)
 }
 
+const Browse = () => {
+  const rocks = useSelector(
+    state => state.rocks,
+    (a, b) => Object.values(a) == Object.values(b),
+  );
+  const users = useSelector(
+    state => state.users,
+  );
+  const currentUser = useSelector(
+    state => state.session.currentUser,
+  );
 
-class Browse extends React.Component {
+  const [viewingRock, setViewingRock] = useState(null);
 
-  constructor(props){
-    super(props);
-    this.state = {
-      viewingRock: null,
-      recievedRocks: [],
-    }
+  const dispatch = useDispatch();
+
+  const groupedRocks = groupRocksByUser(Object.values(rocks));
+  if (!Object.keys(rocks).length) {
+    dispatch(fetchRecievedRocks())
   }
-
-  componentDidMount(){
-    const { firestoreConnection, currentUser, localStore } = this.props.firebase;
-    if (!currentUser) {
-      return;
-    }
-    console.log(currentUser.uid)
-    firestoreConnection.getRocks("toUser", "==", currentUser.uid).then(rocks => {
-      this.setState({
-        recievedRocks: rocks,
-      });
-    });
-  }
-
-  viewRock = (rock) => {
-    this.setState({
-      viewingRock: rock
-    })
-  }
-
-  hideRockModal = () => {
-    this.setState({
-      viewingRock: null
-    })
-  }
-
-  render() {
-    const { viewingRock, recievedRocks } = this.state;
-    const groupedRocks = groupRocksByUser(recievedRocks);
-    return (
-      <div>
-        <FilterButtons />
-        <h1 className={styles["page-title"]}>All rocks</h1>
-        {groupedRocks.map(group => (
-          <section key={group.fromUser.id}>
-            <h2 className={styles["sender-name"]}>from {group.fromUser.displayName}</h2>
-            <ul>
-              {group.rocks.map((rock,index) => (
-                <li key={rock.id} onClick={ () => this.viewRock(rock) }>
-                  <RockPreview rock={rock}/>
-                </li>
-              ))}
-            </ul>
-          </section>
-        ))}
-        {viewingRock && (
-          <RockModal rock={viewingRock} visible={Boolean(viewingRock)} handleClose={this.hideRockModal}/>
-        )}
-      </div>
-    );
-  }
+  return (
+    <div>
+    <h1 className={styles["page-title"]}>All rocks</h1>
+    {groupedRocks.map(group => (
+      <section key={group.userId}>
+      <h2 className={styles["sender-name"]}>from {users[group.userId] && users[group.userId].displayName}</h2>
+      <ul>
+      {group.rocks.map((rock,index) => (
+        <li key={rock.id} onClick={ () => setViewingRock(rock) }>
+        <RockPreview rock={rock}/>
+        </li>
+      ))}
+      </ul>
+      </section>
+    ))}
+    {viewingRock && (
+      <RockModal rock={viewingRock} visible={Boolean(viewingRock)} handleClose={() => setViewingRock(null)}/>
+    )}
+    </div>
+  );
 }
 
-export default withFirebase(Browse);
+export default Browse;

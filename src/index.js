@@ -11,8 +11,12 @@ import FirebaseProvider from './components/FirebaseProvider';
 import { BrowserRouter, Route, Link } from "react-router-dom";
 import { Provider } from 'react-redux';
 import configureStore from './store/store';
+import { getCurrentSession } from './store/actions/session';
+import { useDispatch, useSelector } from 'react-redux';
 
 const App = () => {
+  const dispatch = useDispatch();
+  dispatch(getCurrentSession());
   return (
     <FirebaseProvider>
       <BrowserRouter>

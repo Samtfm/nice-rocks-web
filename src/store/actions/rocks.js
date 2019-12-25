@@ -2,9 +2,12 @@
 // import * as firebase from "firebase/app";
 // import "firebase/auth";
 import { database, getCurrentUser } from '../../firebase/util';
+import store from '../store';
+import { fetchUsers } from './users';
 
+export const FETCH_ROCKS = 'FETCH_ROCKS'
 
-export const fetchRocks = (field, comparitor, value) => dispatch => {
+export const fetchRocks = (field, comparitor, value) => (dispatch, getState) => {
   const rocksRef = database.collection("rocks");
   const usersRef = database.collection("users");
   try {
@@ -12,19 +15,19 @@ export const fetchRocks = (field, comparitor, value) => dispatch => {
 
       const userSet = new Set();
       const rocks = {}
-      querySnapshot.docs.map((doc) => {
+      querySnapshot.docs.forEach((doc) => {
         const rock = doc.data()
         rock.id = doc.id;
-        console.log(rock.id)
-        userSet.add(rock.fromUser)
-        userSet.add(rock.toUser)
         rocks[rock.id] = rock;
-        return rock;
+
+        [rock.fromUser, rock.toUser].forEach(id => userSet.add(id))
       });
+
+      dispatch(fetchUsers(Array.from(userSet)))
       dispatch({
-        type: 'FETCH',
+        type: FETCH_ROCKS,
         rocks: rocks,
-      })
+      });
     });
   } catch (e) {
     console.log(e)
