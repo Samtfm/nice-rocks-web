@@ -18,8 +18,6 @@
   width: 100%;
   box-sizing: border-box;
 
-  // padding: 9px 0;
-
   >li {
     padding: 8px;
   }
@@ -27,6 +25,7 @@
 
 .recipient-input {
   border: 1px solid #EBE9ED;
+  padding: 2px;
   width: 100%;
   height: 40px;
   box-sizing: border-box;

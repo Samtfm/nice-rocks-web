@@ -119,7 +119,7 @@ class SendRockModal extends React.Component {
           <h2>Send rock</h2>
           <p className={styles['error-message']}>{errorMessage}</p>
           <input
-            autocomplete="off"
+            autoComplete="off"
             type="text"
             placeholder="URL (optional)"
             name="url"
@@ -127,14 +127,14 @@ class SendRockModal extends React.Component {
             onChange={this.handleUrlChange}
           />
           <input type="text"
-            autocomplete="off"
+            autoComplete="off"
             placeholder="Title"
             name="title"
             value={this.state.title}
             onChange={this.handleFormChange}
           />
           <textarea
-            autocomplete="off"
+            autoComplete="off"
             placeholder="Say something about your rock..."
             name="note"
             value={this.state.note}

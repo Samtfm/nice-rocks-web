@@ -57,12 +57,13 @@ const Browse = () => {
     dispatch(fetchRecievedRocks())
     groupedRocks = groupRocksByAttr(getRecievedRocks(rocks, currentUser.id), 'fromUser');
   }
+  
   return (
     <div>
       <button onClick={() => setViewSent(!viewSent)}>{viewSent ? "View Recieved" : "View Sent"}</button>
       <h1 className={styles["page-title"]}>{viewSent ? "Sent Rocks": "Recieved Rocks"}</h1>
       {groupedRocks.map(group => (
-        <section key={group.userId}>
+        <section key={group.fromUser || group.toUser}>
         {viewSent ? (
           <h2 className={styles["sender-name"]}>to {users[group.toUser] && users[group.toUser].displayName}</h2>
         ) : (
