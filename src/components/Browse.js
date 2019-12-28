@@ -60,7 +60,7 @@ const Browse = () => {
   //on first render only
   useEffect(() => {
     dispatch(fetchRocks())
-  }, [])
+  }, [viewSent])
 
   groupedRocks = groupRocksByAttr(getRocks(rocks, currentUser.id), filterKey);
 

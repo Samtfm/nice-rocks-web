@@ -55,6 +55,7 @@ export const fetchSentRocks = (force=false) => (dispatch) => {
     lastFetchedRecievedRocks = 0
     lastFetchedSentRocks = 0
   }
+
   if (Date.now() - lastFetchedSentRocks > FIVE_MINUTES) {
     lastFetchedSentRocks = Date.now()
     return dispatch(fetchRocks("fromUser", "==", getCurrentUser().uid));
