@@ -14,7 +14,7 @@ export const fetchRocks = (field, comparitor, value) => (dispatch, getState) => 
   const rocksRef = database.collection("rocks");
   const usersRef = database.collection("users");
   try {
-    rocksRef.where(field, comparitor, value).get().then((querySnapshot) => {
+    return rocksRef.where(field, comparitor, value).get().then((querySnapshot) => {
 
       const userSet = new Set();
       const rocks = {}
@@ -38,17 +38,25 @@ export const fetchRocks = (field, comparitor, value) => (dispatch, getState) => 
 }
 
 let lastFetchedRecievedRocks = 0
-export const fetchRecievedRocks = () => (dispatch) => {
+let lastFetchedSentRocks = 0
+export const fetchRecievedRocks = (force=false) => (dispatch) => {
+  if (force) {
+    lastFetchedRecievedRocks = 0
+    lastFetchedSentRocks = 0
+  }
   if (Date.now() - lastFetchedRecievedRocks > FIVE_MINUTES) {
     lastFetchedRecievedRocks = Date.now()
-    dispatch(fetchRocks("toUser", "==", getCurrentUser().uid));
+    return dispatch(fetchRocks("toUser", "==", getCurrentUser().uid));
   }
 }
 
-let lastFetchedSentRocks = 0
-export const fetchSentRocks = () => (dispatch) => {
+export const fetchSentRocks = (force=false) => (dispatch) => {
+  if (force) {
+    lastFetchedRecievedRocks = 0
+    lastFetchedSentRocks = 0
+  }
   if (Date.now() - lastFetchedSentRocks > FIVE_MINUTES) {
     lastFetchedSentRocks = Date.now()
-    dispatch(fetchRocks("fromUser", "==", getCurrentUser().uid));
+    return dispatch(fetchRocks("fromUser", "==", getCurrentUser().uid));
   }
 }

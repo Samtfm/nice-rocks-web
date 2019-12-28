@@ -1,0 +1,34 @@
+@import "src/colors";
+
+.pull-to-refresh {
+  background: white;
+}
+
+.revealed-background {
+  opacity: 0;
+  background: linear-gradient(90deg, #b5eaba, #d2f2ff);
+  background-size: 400% 400%;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+
+  -webkit-animation: AnimationName 5s ease infinite;
+  -moz-animation: AnimationName 5s ease infinite;
+  animation: AnimationName 5s ease infinite;
+
+  @-webkit-keyframes AnimationName {
+      0%{background-position:0% 50%}
+      50%{background-position:100% 51%}
+      100%{background-position:0% 50%}
+  }
+  @-moz-keyframes AnimationName {
+      0%{background-position:0% 50%}
+      50%{background-position:100% 51%}
+      100%{background-position:0% 50%}
+  }
+  @keyframes AnimationName {
+      0%{background-position:0% 50%}
+      50%{background-position:100% 51%}
+      100%{background-position:0% 50%}
+  }
+}
