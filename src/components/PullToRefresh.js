@@ -18,7 +18,6 @@ const PullToRefresh = ({onRefresh, children}) => {
   const [touchAction, setTouchAction] = useState('none !important');
 
   useEffect(() => {
-    console.log("use effect")
     const scrollState = {
       touchStartY: null,
       overscroll: 0,
@@ -88,10 +87,10 @@ const PullToRefresh = ({onRefresh, children}) => {
     };
   }, []);
   return (
-    <>
+    <div className={styles['container']}>
       <div ref={revealedBackground} className={styles['revealed-background']}></div>
       <div ref={scrollContainer} style={genStyles(offset, touchAction)} className={styles['pull-to-refresh']}>{children}</div>
-    </>
+    </div>
   )
 }
 
