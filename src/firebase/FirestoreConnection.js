@@ -76,11 +76,13 @@ class FirestoreConnection{
   }
 
   postRock = (data) => {
+    const currentTimestamp = this.firebase.firestore.FieldValue.serverTimestamp()
     return database.collection("rocks").add(
       {
         ...data,
         fromUser: this.firebase.auth().currentUser.uid,
-        timestamp: this.firebase.firestore.FieldValue.serverTimestamp(),
+        timeSent: currentTimestamp,
+        timeUpdated: currentTimestamp,
       }
     )
   }
