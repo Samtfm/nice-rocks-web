@@ -1,9 +1,13 @@
+@import "src/colors";
+
 .rock-item {
   padding: 10px;
   margin-bottom: 6px;
   margin-left: 20px;
   border: 1px solid lightgray;
   border-radius: 3px;
+  padding-bottom: 33px;
+  position: relative;
 }
 
 .title {
@@ -19,4 +23,11 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.timestamp {
+  position: absolute;
+  right: 8px;
+  bottom: 4px;
+  color: $gray-medium;
 }

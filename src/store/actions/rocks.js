@@ -14,7 +14,7 @@ export const fetchRocks = (field, comparitor, value) => (dispatch, getState) => 
   const rocksRef = database.collection("rocks");
   const usersRef = database.collection("users");
   try {
-    return rocksRef.where(field, comparitor, value).get().then((querySnapshot) => {
+    return rocksRef.where(field, comparitor, value).orderBy("timeSent", "desc").get().then((querySnapshot) => {
 
       const userSet = new Set();
       const rocks = {}

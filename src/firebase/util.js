@@ -2,6 +2,7 @@ import * as firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
 
+//NOTE: this config does not contain any private/secret info
 const firebaseConfig = {
   apiKey: "AIzaSyBcg_qECwUfEI5B84n79H7kvpMICvb5qWY",
   authDomain: "nice-rocks001.firebaseapp.com",
